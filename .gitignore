@@ -1,0 +1,11 @@
+.vscode
+docs
+tools
+build
+*.3dsx
+*.elf
+*.smdh
+assets/zones/*.tiled-project
+assets/zones/*.tiled-session
+assets/zones/*.tsx
+assets/zones/*.tmx

@@ -1,0 +1,3 @@
+--atlas -f rgba8888 -z auto
+items/axe/0.png
+items/axe/1.png

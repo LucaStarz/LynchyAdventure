@@ -1,0 +1,6 @@
+--atlas -f rgba8888 -z auto
+actors/player/right/0.png
+actors/player/right/1.png
+actors/player/right/2.png
+actors/player/right/3.png
+actors/player/right/4.png

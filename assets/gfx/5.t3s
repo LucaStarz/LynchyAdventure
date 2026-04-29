@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+tiles/animated/dark_mill/0.png
+tiles/animated/dark_mill/1.png
+tiles/animated/dark_mill/2.png
+tiles/animated/dark_mill/3.png

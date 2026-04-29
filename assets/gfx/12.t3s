@@ -1,0 +1,10 @@
+--atlas -f rgba8888 -z auto
+tiles/static/simple_house/0.png
+tiles/static/simple_house/1.png
+tiles/static/simple_house/2.png
+tiles/static/simple_house/3.png
+tiles/static/simple_house/4.png
+tiles/static/simple_house/5.png
+tiles/static/simple_house/6.png
+tiles/static/simple_house/7.png
+tiles/static/simple_house/8.png

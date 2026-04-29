@@ -1,0 +1,3 @@
+--atlas -f rgba8888 -z auto
+items/stick/0.png
+items/stick/1.png

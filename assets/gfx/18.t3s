@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+ui/life_receptacle/0.png
+ui/life_receptacle/1.png
+ui/life_receptacle/2.png
+ui/life_receptacle/3.png

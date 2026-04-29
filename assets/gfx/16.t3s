@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+actors/green_bamboo/right/0.png
+actors/green_bamboo/right/1.png
+actors/green_bamboo/right/2.png
+actors/green_bamboo/right/3.png
