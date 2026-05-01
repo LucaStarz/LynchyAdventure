@@ -22,6 +22,27 @@
          "id":1,
          "name":"Background",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"bottom",
+                 "type":"int",
+                 "value":1
+                }, 
+                {
+                 "name":"left",
+                 "type":"int",
+                 "value":0
+                }, 
+                {
+                 "name":"right",
+                 "type":"int",
+                 "value":0
+                }, 
+                {
+                 "name":"top",
+                 "type":"int",
+                 "value":0
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":25,

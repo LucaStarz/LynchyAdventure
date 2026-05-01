@@ -1,9 +1,10 @@
 #pragma once
 
-#include "systems/text.hpp"
+#include <3ds.h>
+#include "entities/weapon.hpp"
 
 namespace systems {
-    class SaveSystem {
+    class SaveSystem final {
     public:
         static SaveSystem &getInstance();
 
@@ -13,6 +14,7 @@ namespace systems {
         void loadConfigurations();
         void loadPlayerSave();
         void storePlayerSave();
+        void loadWeaponData(entities::Weapon *weapon, u16 weapon_id);
 
         u8 getLang() const;
     private:

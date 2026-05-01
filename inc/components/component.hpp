@@ -1,7 +1,5 @@
 #pragma once
 
-#include "base.hpp"
-
 namespace entities {
     class Entity;
     class Zone;

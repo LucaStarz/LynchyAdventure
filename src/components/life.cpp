@@ -1,14 +1,21 @@
-#include "systems/game.hpp"
+#include "components/life.hpp"
+
 using namespace components;
 
-LifeManager::LifeManager(u8 life, u8 max_life) {
+LifeManager::LifeManager(u8 life, u8 max_life, u16 invicible_time) {
     this->actual_life = life;
     this->max_life = max_life;
-    this->invicible_time = 0;
+
+    this->timer = new Timer(invicible_time, false);
+    this->timer->setFinished();
 }
 
 LifeManager::~LifeManager() {
-    // Do nothing
+    delete this->timer;
+}
+
+void LifeManager::update(entities::Entity *parent, entities::Zone *container) {
+    this->timer->update(parent, container);
 }
 
 u8 LifeManager::getActualLife() const {
@@ -28,12 +35,11 @@ void LifeManager::setMaxLife(u8 max_life) {
 }
 
 void LifeManager::takeDamage(u8 damage) {
-    if (damage >= this->actual_life) {
-        this->actual_life = 0;
+    if (!this->timer->isFinished())
         return;
-    }
 
-    this->actual_life -= damage;
+    this->actual_life = damage >= this->actual_life ? 0 : this->actual_life - damage;
+    this->timer->reset();
 }
 
 void LifeManager::addLife(u8 life) {
@@ -45,11 +51,6 @@ void LifeManager::addLife(u8 life) {
     this->actual_life += life;
 }
 
-bool LifeManager::isInvicible() const {
-    return this->invicible_time > 0;
-}
-
-void LifeManager::setInvicible(u8 invicible_time) {
-    if (!this->invicible_time)
-        this->invicible_time = invicible_time;
+bool LifeManager::isDead() const {
+    return this->actual_life == 0;
 }

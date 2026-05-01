@@ -1,3 +1,6 @@
 --atlas -f rgba8888 -z auto
 items/stick/0.png
 items/stick/1.png
+items/stick/2.png
+items/stick/3.png
+items/stick/4.png

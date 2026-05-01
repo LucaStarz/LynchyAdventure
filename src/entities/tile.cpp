@@ -1,18 +1,16 @@
-#include "systems/game.hpp"
+#include "entities/tile.hpp"
+
 using namespace entities;
 
-Tile::Tile(float x, float y, u16 spritesheet_id, u16 index, float scale)
-    : Entity(x, y) {
-    this->addComponent(
-        new components::ImageComponent(spritesheet_id, index, scale),
-        COMP_IMAGE
-    );
+Tile::Tile(float x, float y, float width, float height, u16 spritesheet_id, u16 index)
+    : Entity(x, y, width, height) {
+    this->image = new components::ImageComponent(spritesheet_id, index);
 }
 
 Tile::~Tile() {
-    // Do nothing
+    delete this->image;
 }
 
 void Tile::render(float depth, Zone *container) {
-    this->getComponent(COMP_IMAGE)->render(this, depth, container);
+    this->image->render(this, depth, container);
 }

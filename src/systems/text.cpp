@@ -1,4 +1,6 @@
-#include "systems/game.hpp"
+#include "systems/text.hpp"
+#include "utils/constants.hpp"
+
 using namespace systems;
 
 TextSystem &TextSystem::getInstance() {

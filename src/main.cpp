@@ -1,4 +1,5 @@
 #include "systems/game.hpp"
+#include <cstdlib>
 
 int main(int argc, char **argv) {
     srand(time(nullptr));

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "systems/save.hpp"
+#include "entities/player.hpp"
 
 namespace systems {
-    class UISystem {
+    class UISystem final {
     public:
         static UISystem &getInstance();
 

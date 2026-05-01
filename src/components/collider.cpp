@@ -1,4 +1,8 @@
-#include "systems/game.hpp"
+#include "components/collider.hpp"
+#include <citro2d.h>
+#include "entities/zone.hpp"
+#include "utils/constants.hpp"
+#include "utils/utilities.hpp"
 
 using namespace components;
 
@@ -28,7 +32,7 @@ void Collider::render(entities::Entity *parent, float depth, entities::Zone *con
 }
 
 void Collider::clampMovement(entities::Entity *parent, entities::Zone *parent_container, entities::Entity *other, entities::Zone *other_container, float *dx, float *dy) {
-    Collider *other_collider = static_cast<Collider*>(other->getComponent(COMP_COLLIDER));
+    Collider *other_collider = other->getCollider();
     if (!other_collider || !(this->scan & other_collider->visible))
         return;
 
@@ -69,8 +73,11 @@ void Collider::clampMovement(entities::Entity *parent, entities::Zone *parent_co
 }
 
 bool Collider::checkCollision(entities::Entity *parent, entities::Zone *parent_container, entities::Entity *other, entities::Zone *other_container) {
-    Collider *other_collider = static_cast<Collider*>(other->getComponent(COMP_COLLIDER));
+    Collider *other_collider = other->getCollider();
     if (!other_collider)
+        return false;
+    
+    if (!(this->scan & other_collider->visible))
         return false;
     
     float parent_x = this->x + parent->getX() + parent_container->getX();
@@ -78,17 +85,13 @@ bool Collider::checkCollision(entities::Entity *parent, entities::Zone *parent_c
     float other_x = other_collider->x + other->getX() + other_container->getX();
     float other_y = other_collider->y + other->getY() + other_container->getY();
 
-    if (this->scan & other_collider->visible) {
-        return !(
-            parent_x + this->width <= other_x ||
-            parent_x >= other_x + other_collider->width ||
+    return !(
+        parent_x + this->width <= other_x ||
+        parent_x >= other_x + other_collider->width ||
 
-            parent_y + this->height <= other_y ||
-            parent_y >= other_y + other_collider->height
-        );
-    }
-
-    return false;
+        parent_y + this->height <= other_y ||
+        parent_y >= other_y + other_collider->height
+    );
 }
 
 float Collider::getX() const {

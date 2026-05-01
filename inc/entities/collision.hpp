@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entities/player.hpp"
+#include "entities/entity.hpp"
 
 namespace entities {
     class Collision : public Entity {
@@ -11,5 +11,9 @@ namespace entities {
     #ifdef LYNCHY_DEBUG
         void render(float depth, Zone *container) override;
     #endif
+        
+        components::Collider *getCollider() const override;
+    private:
+        components::Collider *collider;
     };
 }

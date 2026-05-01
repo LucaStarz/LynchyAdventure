@@ -1,20 +1,21 @@
 #pragma once
 
 #include "components/component.hpp"
+#include <3ds.h>
 
 namespace components {
     class ImageComponent : public Component {
     public:
-        ImageComponent(u16 spritesheet_id, u16 index, float scale);
-        ~ImageComponent();
+        ImageComponent(u16 spritesheet_id, u16 sprite_index);
+        virtual ~ImageComponent();
 
         void render(entities::Entity *parent, float depth, entities::Zone *container) override;
     
         void setSpritesheetId(u16 spritesheet_id);
         void setSpriteIndex(u16 index);
-        void setScale(float scale);
-    private:
-        u16 spritesheet_id, index;
-        float scale;
+
+        u16 getSpritesheetId() const;
+    protected:
+        u16 spritesheet_id, sprite_index;
     };
 }

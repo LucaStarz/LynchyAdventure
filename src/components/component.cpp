@@ -1,4 +1,5 @@
-#include "systems/game.hpp"
+#include "components/component.hpp"
+
 using namespace components;
 
 Component::Component() {

@@ -1,4 +1,4 @@
-#include "systems/game.hpp"
+#include "components/timer.hpp"
 
 using namespace components;
 
@@ -22,6 +22,15 @@ bool Timer::isFinished() const {
     return this->current >= this->duration;
 }
 
+void Timer::setFinished() {
+    this->current = this->duration;
+}
+
 void Timer::reset() {
     this->current = 0;
+}
+
+void Timer::setDuration(u16 duration) {
+    this->duration = duration;
+    this->reset();
 }

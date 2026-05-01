@@ -1,6 +1,8 @@
 #pragma once
 
-#include "entities/animated_tile.hpp"
+#include "entities/entity.hpp"
+#include <vector>
+#include <cstdio>
 
 namespace entities {
     class Zone : public Entity {

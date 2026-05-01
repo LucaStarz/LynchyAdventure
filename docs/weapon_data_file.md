@@ -1,0 +1,21 @@
+# Weapon data file
+
+- u16 : spritesheet's id (= weapon's id)
+- u16 : duration
+- u8  : damage
+- i16 : offset x    (bottom)
+- i16 : offset y    (bottom)
+- u16 : width       (bottom)
+- u16 : height      (bottom)
+- i16 : offset x    (left)
+- i16 : offset y    (left)
+- u16 : width       (left)
+- u16 : height      (left)
+- i16 : offset x    (right)
+- i16 : offset y    (right)
+- u16 : width       (right)
+- u16 : height      (right)
+- i16 : offset x    (top)
+- i16 : offset y    (top)
+- u16 : width       (top)
+- u16 : height      (top)

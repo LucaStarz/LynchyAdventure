@@ -1,6 +1,9 @@
 #pragma once
 
-#include "entities/bamboo.hpp"
+#include <3ds.h>
+#include <citro2d.h>
+#include <unordered_map>
+#include <vector>
 
 namespace systems {
     typedef struct {
@@ -9,7 +12,7 @@ namespace systems {
         u8 loading_count;
     } SpriteSheet;
 
-    class GraphicsSystem {
+    class GraphicsSystem final {
     public:
         static GraphicsSystem &getInstance();
 
@@ -18,14 +21,14 @@ namespace systems {
     
         void loadSpritesheet(u16 id);
         void unloadSpritesheet(u16 id);
-        C2D_Image getSprite(u16 spritesheet_id, u16 index);
+        C2D_Image getSprite(u16 spritesheet_id, u16 sprite_index);
 
         void setBackgroundColor(u32 color);
 
         void drawTopScreen();
         void drawBottomScreen();
     private:
-        std::unordered_map<u16, SpriteSheet*> spritesheets;
+        std::unordered_map<u16, SpriteSheet> spritesheets;
         C3D_RenderTarget *top_screen, *bottom_screen;
         u32 background_color;
     

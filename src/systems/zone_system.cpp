@@ -1,4 +1,8 @@
+#include "systems/zone_system.hpp"
+#include "utils/constants.hpp"
 #include "systems/game.hpp"
+#include "utils/utilities.hpp"
+
 using namespace systems;
 
 ZoneSystem &ZoneSystem::getInstance() {
@@ -162,10 +166,6 @@ bool ZoneSystem::moveToTop() {
 
 u16 ZoneSystem::getActualZoneId() const {
     return this->actual_zone->getZoneId();
-}
-
-const std::vector<entities::Entity*> &ZoneSystem::getComplexEntities() const {
-    return this->actual_zone->getComplexEntities();
 }
 
 entities::Zone *ZoneSystem::getActualZone() const {

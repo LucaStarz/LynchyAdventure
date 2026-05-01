@@ -1,6 +1,7 @@
 #pragma once
 
-#include "components/animated_image.hpp"
+#include "components/component.hpp"
+#include <3ds.h>
 
 namespace components {
     class Collider : public Component {

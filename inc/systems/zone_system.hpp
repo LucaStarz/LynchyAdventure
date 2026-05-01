@@ -1,9 +1,10 @@
 #pragma once
 
-#include "systems/inputs.hpp"
+#include <3ds.h>
+#include <entities/zone.hpp>
 
 namespace systems {
-    class ZoneSystem {
+    class ZoneSystem final {
     public:
         static ZoneSystem &getInstance();
 
@@ -22,7 +23,6 @@ namespace systems {
         bool moveToTop();
 
         u16 getActualZoneId() const;
-        const std::vector<entities::Entity*> &getComplexEntities() const;
 
         entities::Zone *getActualZone() const;
         entities::Zone *getLeftZone() const;

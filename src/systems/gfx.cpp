@@ -1,4 +1,8 @@
 #include "systems/gfx.hpp"
+#include "utils/constants.hpp"
+#include "utils/utilities.hpp"
+#include "utils/spritesheets.hpp"
+
 using namespace systems;
 
 GraphicsSystem &GraphicsSystem::getInstance() {
@@ -21,15 +25,14 @@ GraphicsSystem::GraphicsSystem() {
     this->bottom_screen = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 #endif
 
-    for (u16 i = 7; i < 11; i++)
+    for (u16 i = utils::SPRT_PLAYER_LEFT; i <= utils::SPRT_PLAYER_BOTTOM; i++)
         this->loadSpritesheet(i);   // Player spritesheets
-    this->loadSpritesheet(18);      // Life receptacle spritesheet
+    this->loadSpritesheet(utils::SPRT_LIFE_RECEPTACLE);      // Life receptacle spritesheet
 }
 
 GraphicsSystem::~GraphicsSystem() {
     for (auto &spritesheet : this->spritesheets) {
-        C2D_SpriteSheetFree(spritesheet.second->spritesheet);
-        delete spritesheet.second;
+        C2D_SpriteSheetFree(spritesheet.second.spritesheet);
     }
 
     C3D_RenderTargetDelete(this->top_screen);
@@ -46,27 +49,27 @@ GraphicsSystem::~GraphicsSystem() {
 void GraphicsSystem::loadSpritesheet(u16 id) {
     auto spritesheet = this->spritesheets.find(id);
     if (spritesheet != this->spritesheets.end()) {
-        spritesheet->second->loading_count += 1;
+        spritesheet->second.loading_count += 1;
         return;
     }
     
-    SpriteSheet *new_spritesheet = new SpriteSheet;
+    SpriteSheet new_spritesheet;
     char filename[48];
     sprintf(filename, GFX_PATH, id);
-    new_spritesheet->spritesheet = C2D_SpriteSheetLoad(filename);
-    new_spritesheet->loading_count = 1;
-    if (!new_spritesheet->spritesheet) {
+    new_spritesheet.spritesheet = C2D_SpriteSheetLoad(filename);
+    new_spritesheet.loading_count = 1;
+    if (!new_spritesheet.spritesheet) {
         PRINT("Failed to load spritesheet %u\n", id);
         return;
     }
     
-    u16 sprites_count = C2D_SpriteSheetCount(new_spritesheet->spritesheet);
-    new_spritesheet->sprites.reserve(sprites_count);
+    u16 sprites_count = C2D_SpriteSheetCount(new_spritesheet.spritesheet);
+    new_spritesheet.sprites.reserve(sprites_count);
     for (u16 i = 0; i < sprites_count; i++)
-        new_spritesheet->sprites[i] = std::move(C2D_SpriteSheetGetImage(new_spritesheet->spritesheet, i));
+        new_spritesheet.sprites[i] = std::move(C2D_SpriteSheetGetImage(new_spritesheet.spritesheet, i));
     
     PRINT("Spritesheet %u was loaded\n", id);
-    this->spritesheets[id] = new_spritesheet;
+    this->spritesheets[id] = std::move(new_spritesheet);
 }
 
 void GraphicsSystem::unloadSpritesheet(u16 id) {
@@ -74,19 +77,19 @@ void GraphicsSystem::unloadSpritesheet(u16 id) {
     if (spritesheet == this->spritesheets.end())
         return;
     
-    spritesheet->second->loading_count -= 1;
-    if (!spritesheet->second->loading_count) {
+    spritesheet->second.loading_count -= 1;
+    if (!spritesheet->second.loading_count) {
         PRINT("Spritesheet %u was unloaded\n", id);
         this->spritesheets.erase(spritesheet);
     }
 }
 
-C2D_Image GraphicsSystem::getSprite(u16 spritesheet_id, u16 index) {
+C2D_Image GraphicsSystem::getSprite(u16 spritesheet_id, u16 sprite_index) {
     auto spritesheet = this->spritesheets.find(spritesheet_id);
-    if (spritesheet == this->spritesheets.end())
-        return C2D_Image{ nullptr, nullptr };
-
-    return spritesheet->second->sprites[index];
+    if (spritesheet == this->spritesheets.end() || sprite_index >= spritesheet->second.sprites.capacity())
+        return { nullptr, nullptr };
+    
+    return spritesheet->second.sprites[sprite_index];
 }
 
 void GraphicsSystem::setBackgroundColor(u32 color) {

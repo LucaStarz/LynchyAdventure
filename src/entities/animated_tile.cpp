@@ -1,22 +1,20 @@
-#include "systems/game.hpp"
+#include "entities/animated_tile.hpp"
+
 using namespace entities;
 
-AnimatedTile::AnimatedTile(float x, float y, u16 spritesheet_id, u16 first_index, u16 last_index, u8 duration, float scale) 
-    : Entity(x, y) {
-    this->addComponent(
-        new components::AnimatedImage(spritesheet_id, first_index, last_index, duration, scale),
-        COMP_IMAGE
-    );
+AnimatedTile::AnimatedTile(float x, float y, float width, float height, u16 spritesheet_id, u16 first_index, u16 last_index, u8 duration) 
+    : Entity(x, y, width, height) {
+    this->animated_image = new components::AnimatedImage(spritesheet_id, first_index, last_index, duration);
 }
 
 AnimatedTile::~AnimatedTile() {
-    // Do nothing
+    delete this->animated_image;
 }
 
 void AnimatedTile::update(Zone *container) {
-    this->getComponent(COMP_IMAGE)->update(this, container);
+    this->animated_image->update(this, container);
 }
 
 void AnimatedTile::render(float depth, Zone *container) {
-    this->getComponent(COMP_IMAGE)->render(this, depth, container);
+    this->animated_image->render(this, depth, container);
 }

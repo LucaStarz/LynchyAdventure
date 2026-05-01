@@ -1,4 +1,10 @@
+#include "systems/save.hpp"
+#include <cstdio>
+#include "utils/constants.hpp"
+#include "utils/utilities.hpp"
 #include "systems/game.hpp"
+#include "systems/zone_system.hpp"
+
 using namespace systems;
 
 SaveSystem &SaveSystem::getInstance() {
@@ -56,6 +62,11 @@ void SaveSystem::loadPlayerSave() {
     u8 max_life = fgetc(player_save_file);
     game_system.getPlayer()->setLifeInfos(actual_life, max_life);
 
+    // Read player's weapon id
+    u16 weapon_id;
+    fread(&weapon_id, sizeof(u16), 1, player_save_file);
+    game_system.getPlayer()->setWeapon(weapon_id);
+
     PRINT("Player's data has been read\n");
     fclose(player_save_file);
 }
@@ -85,8 +96,44 @@ void SaveSystem::storePlayerSave() {
     fputc(life, player_save_file);
     fputc(max_life, player_save_file);
 
+    // Store player's weapon id
+    u16 weapon_id = game_system.getPlayer()->getWeaponId();
+    fwrite(&weapon_id, sizeof(u16), 1, player_save_file);
+
     PRINT("Player's data has been saved\n");
     fclose(player_save_file);
+}
+
+void SaveSystem::loadWeaponData(entities::Weapon *weapon, u16 weapon_id) {
+    char weapon_path[64];
+    sprintf(weapon_path, "romfs:/weapons/%u.wdf", weapon_id);
+    FILE *weapon_data_file = fopen(weapon_path, "rb");
+    if (!weapon_data_file) {
+        PRINT("Failed to open weapon data file %u\n", weapon_id);
+        return;
+    }
+
+    weapon->setSpritesheet(weapon_id);
+
+    u16 duration;
+    fread(&duration, sizeof(u16), 1, weapon_data_file);
+    weapon->setDuration(duration);
+
+    weapon->setDamage(fgetc(weapon_data_file));
+
+    for (u8 i = utils::FIX_DIR_BOTTOM; i <= utils::FIX_DIR_TOP; i++) {
+        s16 offset_x, offset_y;
+        u16 width, height;
+        fread(&offset_x, sizeof(s16), 1, weapon_data_file);
+        fread(&offset_y, sizeof(s16), 1, weapon_data_file);
+        fread(&width, sizeof(u16), 1, weapon_data_file);
+        fread(&height, sizeof(u16), 1, weapon_data_file);
+
+        weapon->setDirectionInfo(i, offset_x, offset_y, width, height);
+    }
+
+    PRINT("Weapon's data %u was loaded\n", weapon_id);
+    fclose(weapon_data_file);
 }
 
 u8 SaveSystem::getLang() const {
@@ -134,6 +181,11 @@ void SaveSystem::initPlayerSave() {
     game_system.getPlayer()->setLifeInfos(life, max_life);
     fputc(life, player_save_file);
     fputc(max_life, player_save_file);
+
+    // Initialize player's weapon id
+    u16 weapon_id = DEFAULT_PLAYER_WEAPON;
+    game_system.getPlayer()->setWeapon(weapon_id);
+    fwrite(&weapon_id, sizeof(u16), 1, player_save_file);
 
     fclose(player_save_file);
 }

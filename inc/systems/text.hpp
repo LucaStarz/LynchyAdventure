@@ -1,9 +1,10 @@
 #pragma once
 
-#include "systems/zone_system.hpp"
+#include <3ds.h>
+#include <citro2d.h>
 
 namespace systems {
-    class TextSystem {
+    class TextSystem final {
     public:
         static TextSystem &getInstance();
 

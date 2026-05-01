@@ -1,8 +1,17 @@
-#include "systems/game.hpp"
+#include "entities/zone.hpp"
+#include "entities/collision.hpp"
+#include "entities/bamboo.hpp"
+#include "entities/tile.hpp"
+#include "entities/animated_tile.hpp"
+#include "utils/constants.hpp"
+#include "utils/utilities.hpp"
+#include "utils/spritesheets.hpp"
+#include "systems/gfx.hpp"
+
 using namespace entities;
 
 Zone::Zone(float x, float y)
-    : Entity(x, y) {
+    : Entity(x, y, SCREEN_WIDTH, SCREEN_HEIGHT) {
     
 }
 
@@ -196,14 +205,17 @@ u16 Zone::loadU16(FILE *zone_file) {
 
 entities::Entity *Zone::createEntity(u16 spritesheet_id, u16 sprite_index, float x, float y, bool *is_complex) {
     switch (spritesheet_id) {
-        case 3: case 5: case 6: case 11:
-            return new entities::AnimatedTile(x, y, spritesheet_id, 0, 3, 8, 1.f);
+        case utils::SPRT_PLANT: case utils::SPRT_BLACK_FLAG:
+            return new entities::AnimatedTile(x, y, TILE_SIZE, TILE_SIZE, spritesheet_id, 0, 3, 8);
 
-        case 17:
+        case utils::SPRT_DARK_MILL: case utils::SPRT_LIGHT_MILL:
+            return new entities::AnimatedTile(x, y, TILE_SIZE * 4.f, TILE_SIZE * 4.f, spritesheet_id, 0, 3, 8);
+
+        case utils::SPRT_GREEN_BAMBOO_BOTTOM:
             *is_complex = true;
             return new entities::Bamboo(x, y);
 
         default:
-            return new entities::Tile(x, y, spritesheet_id, sprite_index, 1.f);
+            return new entities::Tile(x, y, TILE_SIZE, TILE_SIZE, spritesheet_id, sprite_index);
     }
 }

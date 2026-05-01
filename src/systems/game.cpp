@@ -1,4 +1,12 @@
 #include "systems/game.hpp"
+#include "systems/zone_system.hpp"
+#include "systems/save.hpp"
+#include "systems/inputs.hpp"
+#include "systems/gfx.hpp"
+#include "utils/utilities.hpp"
+#include "systems/ui.hpp"
+#include "utils/constants.hpp"
+
 using namespace systems;
 
 GameSystem &GameSystem::getInstance() {
@@ -28,8 +36,6 @@ void GameSystem::update() {
     inputs_system.update();
     if (inputs_system.isKeyDown(KEY_START))
         SaveSystem::getInstance().storePlayerSave();
-    else if (inputs_system.isKeyDown(KEY_SELECT))
-        this->player->takeDamage();
 
     switch (this->state) {
         case GameState::GS_IN_GAME:

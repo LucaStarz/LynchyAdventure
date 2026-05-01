@@ -1,4 +1,8 @@
+#include "systems/ui.hpp"
+#include "systems/gfx.hpp"
 #include "systems/game.hpp"
+#include "utils/constants.hpp"
+
 using namespace systems;
 
 UISystem &UISystem::getInstance() {
@@ -23,7 +27,7 @@ void UISystem::renderBottomScreenUI() {
 }
 
 void UISystem::renderLife(entities::Player *player) {
-    components::LifeManager *life_manager = static_cast<components::LifeManager*>(player->getComponent(COMP_LIFE));
+    components::LifeManager *life_manager = player->getLifeManager();
     GraphicsSystem &gfx_system = GraphicsSystem::getInstance();
 
     u8 actual_life = life_manager->getActualLife();

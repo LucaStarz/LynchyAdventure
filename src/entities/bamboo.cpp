@@ -1,64 +1,101 @@
+#include "entities/bamboo.hpp"
+#include "utils/constants.hpp"
+#include "utils/collisions.hpp"
+#include "utils/spritesheets.hpp"
+#include "systems/zone_system.hpp"
+#include "entities/player.hpp"
 #include "systems/game.hpp"
+
+#define IDLE_ANIM   0
+#define WALK_ANIM   1
+
 using namespace entities;
 
 Bamboo::Bamboo(float x, float y)
-    : Entity(x, y) {
-    this->addComponent(
-        new components::AnimatedImage(SPRT_GREEN_BAMBOO_BOTTOM, 0, 0, 8, 1.f),
-        COMP_IMAGE
-    );
-
-    this->addComponent(
-        new components::Collider(
-            COL_LAYER_ENEMY,
-            COL_LAYER_TERRAIN | COL_LAYER_WATER,
-            2.f, 11.f, 12.f, 5.f
-        ),
-        COMP_COLLIDER
-    );
-
-    this->addComponent(
-        new components::Hitbox(COL_LAYER_PLAYER, 0.f, 0.f, TILE_SIZE, TILE_SIZE),
-        COMP_HITBOX
-    );
-
-    this->addComponent(
-        new components::Hurtbox(COL_LAYER_ENEMY, 0.f, 0.f, TILE_SIZE, TILE_SIZE),
-        COMP_HURTBOX
-    );
-
-    this->addComponent(
-        new components::SquaredDetector(100.f, TILE_SIZE),
-        COMP_SQUARED_DETECTOR
-    );
+    : Entity(x, y, TILE_SIZE, TILE_SIZE) {
+    this->collider = new components::Collider(utils::COL_LAYER_ENEMY, utils::COL_LAYER_TERRAIN | utils::COL_LAYER_WATER, 2.f, 11.f, 12.f, 5.f);
+    this->animator = new components::Animator();
+    this->addAnimations();
+    
+    this->hitbox = new components::Hitbox(utils::COL_LAYER_PLAYER, 1, 0.f, 0.f, TILE_SIZE, TILE_SIZE);
+    this->hurtbox = new components::Hurtbox(utils::COL_LAYER_ENEMY, 0.f, 0.f, TILE_SIZE, TILE_SIZE);
+    this->dectector = new components::SquaredDetector(100.f);
+    this->life_manager = new components::LifeManager(1, 1, DEFAULT_PLAYER_INV_TIME);
+    this->movement = new components::Movement(ENEMY_BAMBOO_SP_RT);
 }
 
 Bamboo::~Bamboo() {
-    // Do nothing
+    delete this->collider;
+    delete this->animator;
+    delete this->hitbox;
+    delete this->hurtbox;
+    delete this->dectector;
+    delete this->life_manager;
+    delete this->movement;
 }
 
 void Bamboo::update(Zone *container) {
+    if (this->life_manager->isDead())
+        return;
+
     Player *player = systems::GameSystem::getInstance().getPlayer();
     systems::ZoneSystem &zone_system = systems::ZoneSystem::getInstance();
 
-    components::AnimatedImage *animated_image = static_cast<components::AnimatedImage*>(this->getComponent(COMP_IMAGE));
-    animated_image->update(this, container);
+    u8 direction = this->dectector->getDirectionTo(this, container, player, zone_system.getActualZone());
+    this->movement->applyMovement(this, container, direction);
+    this->animator->update(this, container);
+    if (this->movement->getDx() == 0.f && this->movement->getDy() == 0.f)
+        this->animator->setCurrentAnimation(IDLE_ANIM);
+    else
+        this->animator->setCurrentAnimation(WALK_ANIM);
 
-    float dx = 0.f, dy = 0.f;
-    components::SquaredDetector *detector = static_cast<components::SquaredDetector*>(this->getComponent(COMP_SQUARED_DETECTOR));
-    detector->getMovement(this, container, player, zone_system.getActualZone(), &dx, &dy);
-
-    this->moveXY(dx / ENEMY_BAMBOO_SP_RT, dy / ENEMY_BAMBOO_SP_RT);
-    animated_image->animate(dx, dy, SPRT_GREEN_BAMBOO_LEFT, 0, 3, 1);
+    this->hitbox->checkHurtbox(this, container, player, zone_system.getActualZone());
 }
 
 void Bamboo::render(float depth, Zone *container) {
-    this->getComponent(COMP_IMAGE)->render(this, depth, container);
+    if (this->life_manager->isDead())
+        return;
+
+    this->animator->render(this, depth, container);
 
 #ifdef LYNCHY_DEBUG
-    this->getComponent(COMP_SQUARED_DETECTOR)->render(this, depth, container);
-    this->getComponent(COMP_COLLIDER)->render(this, depth, container);
-    this->getComponent(COMP_HURTBOX)->render(this, depth, container);
-    this->getComponent(COMP_HITBOX)->render(this, depth, container);
+    this->dectector->render(this, depth, container);
+    this->collider->render(this, depth, container);
+    this->hurtbox->render(this, depth, container);
+    this->hitbox->render(this, depth, container);
 #endif
+}
+
+components::Hurtbox *Bamboo::getHurtbox() const {
+    return this->hurtbox;
+}
+
+components::Collider *Bamboo::getCollider() const {
+    return this->collider;
+}
+
+components::LifeManager *Bamboo::getLifeManager() const {
+    return this->life_manager;
+}
+
+components::Movement *Bamboo::getMovement() const {
+    return this->movement;
+}
+
+components::Animator *Bamboo::getAnimator() const {
+    return this->animator;
+}
+
+void Bamboo::addAnimations() {
+    u8 left = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_LEFT, 0, 0, 0);
+    u8 right = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_RIGHT, 0, 0, 0);
+    u8 top = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_TOP, 0, 0, 0);
+    u8 bottom = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_BOTTOM, 0, 0, 0);
+    this->animator->addOrientedAnimation(left, right, top, bottom);
+
+    left = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_LEFT, 0, 3, 8);
+    right = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_RIGHT, 0, 3, 8);
+    top = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_TOP, 0, 3, 8);
+    bottom = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_BOTTOM, 0, 3, 8);
+    this->animator->addOrientedAnimation(left, right, top, bottom);
 }

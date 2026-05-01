@@ -1,6 +1,7 @@
 #pragma once
 
-#include "systems/ui.hpp"
+#include <3ds.h>
+#include <entities/player.hpp>
 
 namespace systems {
     enum GameState : u8 {
@@ -10,7 +11,7 @@ namespace systems {
         GS_PAUSE_MENU, GS_GAME_OVER
     };
 
-    class GameSystem {
+    class GameSystem final {
     public:
         static GameSystem &getInstance();
 

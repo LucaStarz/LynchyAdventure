@@ -1,9 +1,9 @@
 #pragma once
 
-#include "systems/camera.hpp"
+#include <3ds.h>
 
 namespace systems {
-    class InputsSystem {
+    class InputsSystem final {
     public:
         static InputsSystem &getInstance();
 

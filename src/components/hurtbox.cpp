@@ -1,4 +1,9 @@
-#include "systems/game.hpp"
+#include "components/hurtbox.hpp"
+#include <citro2d.h>
+#include "utils/constants.hpp"
+#include "utils/utilities.hpp"
+#include "entities/zone.hpp"
+
 using namespace components;
 
 Hurtbox::Hurtbox(u8 visible, float x, float y, float width, float height) {
@@ -22,4 +27,24 @@ void Hurtbox::render(entities::Entity *parent, float depth, entities::Zone *cont
         DEBUG_HURTBOX_COLOR()
     );
 #endif
+}
+
+float Hurtbox::getX() const {
+    return this->x;
+}
+
+float Hurtbox::getY() const {
+    return this->y;
+}
+
+float Hurtbox::getWidth() const {
+    return this->width;
+}
+
+float Hurtbox::getHeight() const {
+    return this->height;
+}
+
+u8 Hurtbox::getVisible() const {
+    return this->visible;
 }
