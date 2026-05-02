@@ -6,10 +6,10 @@
 namespace entities {
     class AnimatedTile : public Entity {
     public:
-        AnimatedTile(float x, float y, float width, float height, u16 spritesheet_id, u16 first_index, u16 last_index, u8 duration);
+        AnimatedTile(float x, float y, float width, float height, utils::SPRITESHEETS_ID spritesheet_id, u16 first_index, u16 last_index, u8 duration);
         ~AnimatedTile();
 
-        void update(Zone *container) override;
+        bool update(Zone *container) override;
         void render(float depth, Zone *container) override;
     
     private:

@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+items/coin/0.png
+items/coin/1.png
+items/coin/2.png
+items/coin/3.png

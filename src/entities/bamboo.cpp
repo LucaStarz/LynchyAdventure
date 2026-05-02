@@ -5,9 +5,11 @@
 #include "systems/zone_system.hpp"
 #include "entities/player.hpp"
 #include "systems/game.hpp"
+#include "entities/coin.hpp"
 
 #define IDLE_ANIM   0
 #define WALK_ANIM   1
+#define DEAD_ANIM   2
 
 using namespace entities;
 
@@ -34,28 +36,31 @@ Bamboo::~Bamboo() {
     delete this->movement;
 }
 
-void Bamboo::update(Zone *container) {
-    if (this->life_manager->isDead())
-        return;
+bool Bamboo::update(Zone *container) {
+    if (this->life_manager->isDead()) {
+        this->animator->setCurrentAnimation(DEAD_ANIM);
+        this->animator->update(this, container);
+        if (this->animator->isAnimationFinished())
+            return false;
+    } else {
+        Player *player = systems::GameSystem::getInstance().getPlayer();
+        systems::ZoneSystem &zone_system = systems::ZoneSystem::getInstance();
 
-    Player *player = systems::GameSystem::getInstance().getPlayer();
-    systems::ZoneSystem &zone_system = systems::ZoneSystem::getInstance();
+        u8 direction = this->dectector->getDirectionTo(this, container, player, zone_system.getActualZone());
+        this->movement->applyMovement(this, container, direction);
+        this->animator->update(this, container);
+        if (this->movement->getDx() == 0.f && this->movement->getDy() == 0.f)
+            this->animator->setCurrentAnimation(IDLE_ANIM);
+        else
+            this->animator->setCurrentAnimation(WALK_ANIM);
 
-    u8 direction = this->dectector->getDirectionTo(this, container, player, zone_system.getActualZone());
-    this->movement->applyMovement(this, container, direction);
-    this->animator->update(this, container);
-    if (this->movement->getDx() == 0.f && this->movement->getDy() == 0.f)
-        this->animator->setCurrentAnimation(IDLE_ANIM);
-    else
-        this->animator->setCurrentAnimation(WALK_ANIM);
+        this->hitbox->checkHurtbox(this, container, player, zone_system.getActualZone());
+    }
 
-    this->hitbox->checkHurtbox(this, container, player, zone_system.getActualZone());
+    return true;
 }
 
 void Bamboo::render(float depth, Zone *container) {
-    if (this->life_manager->isDead())
-        return;
-
     this->animator->render(this, depth, container);
 
 #ifdef LYNCHY_DEBUG
@@ -64,6 +69,10 @@ void Bamboo::render(float depth, Zone *container) {
     this->hurtbox->render(this, depth, container);
     this->hitbox->render(this, depth, container);
 #endif
+}
+
+Entity *Bamboo::getLoot() const {
+    return new Coin(this->getX() + 4.f, this->getY() + 4.f);
 }
 
 components::Hurtbox *Bamboo::getHurtbox() const {
@@ -98,4 +107,8 @@ void Bamboo::addAnimations() {
     top = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_TOP, 0, 3, 8);
     bottom = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_BOTTOM, 0, 3, 8);
     this->animator->addOrientedAnimation(left, right, top, bottom);
+
+    this->animator->addNonOrientedAnimation(
+        this->animator->addAnimation(utils::SPRT_DEAD, 0, 5, 8)
+    );
 }

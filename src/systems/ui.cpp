@@ -43,7 +43,7 @@ void UISystem::renderLife(entities::Player *player) {
         }
 
         C2D_DrawImageAt(
-            gfx_system.getSprite(18, sprite_index),
+            gfx_system.getSprite(utils::SPRT_LIFE_RECEPTACLE, sprite_index),
             x, y,
             Z_INDEX_BACKGROUND, nullptr,
             0.75f, 0.75f

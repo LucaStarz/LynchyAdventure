@@ -58,12 +58,16 @@ void Entity::moveXY(float x, float y) {
     this->y += y;
 }
 
-void Entity::update(Zone *container) {
-    // Do nothing
+bool Entity::update(Zone *container) {
+    return true;
 }
 
 void Entity::render(float depth, Zone *container) {
     // Do nothing
+}
+
+Entity *Entity::getLoot() const {
+    return nullptr;
 }
 
 components::Hurtbox *Entity::getHurtbox() const {

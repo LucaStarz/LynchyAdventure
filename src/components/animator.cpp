@@ -24,10 +24,10 @@ Animator::~Animator() {
 }
 
 void Animator::update(entities::Entity *parent, entities::Zone *container) {
-    this->current_time += 1;
     u8 animation_index = this->oriented_animations[this->current_animation].ids[this->direction];
     Animation animation = this->animations[animation_index];
 
+    this->current_time += 1;
     if (this->current_time >= animation.duration) {
         this->current_index += 1;
         if (this->current_index > animation.last_index)
@@ -60,7 +60,7 @@ void Animator::render(entities::Entity *parent, float depth, entities::Zone *con
     C2D_Image sprite = systems::GraphicsSystem::getInstance().getSprite(animation.spritesheet, this->current_index);
     if (!sprite.subtex)
         return;
-    
+
     C2D_DrawImageAt(
         sprite,
         parent->getX() + container->getX(), parent->getY() + container->getY(),
@@ -69,7 +69,7 @@ void Animator::render(entities::Entity *parent, float depth, entities::Zone *con
     );
 }
 
-u8 Animator::addAnimation(u16 spritesheet, u16 first_index, u16 last_index, u8 duration) {
+u8 Animator::addAnimation(utils::SPRITESHEETS_ID spritesheet, u16 first_index, u16 last_index, u8 duration) {
     Animation anim;
     anim.spritesheet = spritesheet;
     anim.first_index = first_index;
@@ -108,4 +108,11 @@ void Animator::setCurrentAnimation(u8 animation) {
 
 utils::FIXED_DIRECTION Animator::getDirection() const {
     return this->direction;
+}
+
+bool Animator::isAnimationFinished() const {
+    u8 animation_index = this->oriented_animations[this->current_animation].ids[this->direction];
+    Animation animation = this->animations[animation_index];
+
+    return this->current_index >= animation.last_index && this->current_time >= animation.duration - 1;
 }

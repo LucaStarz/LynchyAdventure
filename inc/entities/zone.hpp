@@ -3,6 +3,7 @@
 #include "entities/entity.hpp"
 #include <vector>
 #include <cstdio>
+#include "utils/spritesheets.hpp"
 
 namespace entities {
     class Zone : public Entity {
@@ -10,7 +11,7 @@ namespace entities {
         Zone(float x, float y);
         ~Zone();
 
-        void update(Zone *container) override;
+        bool update(Zone *container) override;
         void renderBackground();
         void renderForeground();
 
@@ -28,13 +29,13 @@ namespace entities {
 
         std::vector<Entity*> complex_entities;
 
-        std::vector<u16> spritesheets;
+        std::vector<utils::SPRITESHEETS_ID> spritesheets;
         u16 id;
 
         void clear();
         void loadZonePart(std::vector<Entity*> *zone_part, FILE *zone_file);
         void loadZoneCollisions(FILE *zone_file);
         u16 loadU16(FILE *zone_file);
-        entities::Entity *createEntity(u16 spritesheet_id, u16 sprite_index, float x, float y, bool *is_complex);
+        entities::Entity *createEntity(utils::SPRITESHEETS_ID spritesheet_id, u16 sprite_index, float x, float y, bool *is_complex);
     };
 }

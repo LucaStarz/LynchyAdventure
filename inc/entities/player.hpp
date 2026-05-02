@@ -3,6 +3,7 @@
 #include "entities/entity.hpp"
 #include "entities/weapon.hpp"
 #include "components/animator.hpp"
+#include "utils/spritesheets.hpp"
 
 namespace entities {
     class Player : public Entity {
@@ -10,7 +11,7 @@ namespace entities {
         Player();
         ~Player();
 
-        void update(Zone *container) override;
+        bool update(Zone *container) override;
         void render(float depth, Zone *container) override;
 
         components::Hurtbox *getHurtbox() const override;
@@ -24,8 +25,8 @@ namespace entities {
         void setLifeInfos(u8 life, u8 max_life);
         void getLifeInfos(u8 *life, u8 *max_life);
     
-        void setWeapon(u16 weapon_id);
-        u16 getWeaponId() const;
+        void setWeapon(utils::SPRITESHEETS_ID weapon_id);
+        utils::SPRITESHEETS_ID getWeaponId() const;
     private:
         Weapon *weapon;
 

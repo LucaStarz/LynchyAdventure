@@ -14,7 +14,7 @@ namespace systems {
         void loadConfigurations();
         void loadPlayerSave();
         void storePlayerSave();
-        void loadWeaponData(entities::Weapon *weapon, u16 weapon_id);
+        void loadWeaponData(entities::Weapon *weapon, utils::SPRITESHEETS_ID weapon_id);
 
         u8 getLang() const;
     private:

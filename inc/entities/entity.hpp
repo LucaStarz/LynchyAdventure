@@ -27,8 +27,9 @@ namespace entities {
         void moveY(float y);
         void moveXY(float x, float y);
 
-        virtual void update(Zone *container);
+        virtual bool update(Zone *container);
         virtual void render(float depth, Zone *container);
+        virtual Entity *getLoot() const;
 
         virtual components::Hurtbox *getHurtbox() const;
         virtual components::Collider *getCollider() const;

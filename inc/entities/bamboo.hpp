@@ -11,8 +11,9 @@ namespace entities {
         Bamboo(float x, float y);
         ~Bamboo();
 
-        void update(Zone *container) override;
+        bool update(Zone *container) override;
         void render(float depth, Zone *container) override;
+        Entity *getLoot() const;
 
         components::Hurtbox *getHurtbox() const override;
         components::Collider *getCollider() const override;

@@ -4,13 +4,13 @@
 
 using namespace entities;
 
-Weapon::Weapon(float x, float y, float w, float h, u8 damage, u8 scan, u16 duration, u16 spritesheet, u16 sprite_index)
+Weapon::Weapon(float x, float y, float w, float h, u8 damage, u8 scan, u16 duration)
     : Entity(x, y, w, h) {
     this->enable = false;
     this->direction = utils::FIX_DIR_BOTTOM;
 
     this->hitbox = new components::Hitbox(scan, 1, 0.f, 0.f, w, h);
-    this->image = new components::ImageComponent(spritesheet, sprite_index);
+    this->image = new components::ImageComponent(utils::SPRT_EMPTY, 0);
     this->timer = new components::Timer(duration, false);
 }
 
@@ -36,7 +36,7 @@ void Weapon::setDisable() {
     this->timer->setFinished();
 }
 
-void Weapon::update(Zone *container) {
+bool Weapon::update(Zone *container) {
     if (this->enable) {
         this->timer->update(this, container);
         if (this->timer->isFinished())
@@ -49,6 +49,8 @@ void Weapon::update(Zone *container) {
         this->checkHurtbox(container, zone_system.getRightZone());
         this->checkHurtbox(container, zone_system.getBottomZone());
     }
+
+    return true;
 }
 
 void Weapon::render(float depth, Zone *container) {
@@ -61,7 +63,7 @@ void Weapon::render(float depth, Zone *container) {
     }
 }
 
-void Weapon::setSpritesheet(u16 spritesheet) {
+void Weapon::setSpritesheet(utils::SPRITESHEETS_ID spritesheet) {
     this->image->setSpritesheetId(spritesheet);
 }
 
@@ -92,7 +94,7 @@ void Weapon::updateDirection(entities::Entity *parent, components::Animator *ani
     this->setY(parent->getY() + this->directions[this->direction].offset_y + this->direction == utils::FIX_DIR_BOTTOM ? parent->getY() : 0.f);
 }
 
-u16 Weapon::getSpritesheet() const {
+utils::SPRITESHEETS_ID Weapon::getSpritesheet() const {
     return this->image->getSpritesheetId();
 }
 

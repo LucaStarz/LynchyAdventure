@@ -16,7 +16,7 @@ using namespace entities;
 
 Player::Player() 
     : Entity(0.f, 0.f, TILE_SIZE, TILE_SIZE) {
-    this->weapon = new Weapon(this->getX(), this->getY() + TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, utils::COL_LAYER_ENEMY, 0, 0, 0);
+    this->weapon = new Weapon(this->getX(), this->getY() + TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, utils::COL_LAYER_ENEMY, 0);
 
     this->animator = new components::Animator();
     this->addAnimations();
@@ -38,7 +38,7 @@ Player::~Player() {
     delete this->movement;
 }
 
-void Player::update(Zone *container) {
+bool Player::update(Zone *container) {
     systems::InputsSystem &inputs_system = systems::InputsSystem::getInstance();
     
     if (this->weapon->isEnable()) {
@@ -63,8 +63,11 @@ void Player::update(Zone *container) {
     this->weapon->checkParentInfo(this);
     if (inputs_system.isKeyDown(KEY_A))
         this->weapon->setEnable();
+    else if (inputs_system.isKeyDown(KEY_START))
+        this->setWeapon(utils::SPRT_WEAPON_AXE);
     
     this->life_manager->update(this, container);
+    return true;
 }
 
 void Player::render(float depth, Zone *container) {
@@ -128,8 +131,8 @@ void Player::getLifeInfos(u8 *life, u8 *max_life) {
     *max_life = this->life_manager->getMaxLife();
 }
 
-void Player::setWeapon(u16 weapon_id) {
-    u16 old_spritesheet = this->weapon->getSpritesheet();
+void Player::setWeapon(utils::SPRITESHEETS_ID weapon_id) {
+    utils::SPRITESHEETS_ID old_spritesheet = this->weapon->getSpritesheet();
     if (old_spritesheet != 0)
         systems::GraphicsSystem::getInstance().unloadSpritesheet(old_spritesheet);
     
@@ -138,7 +141,7 @@ void Player::setWeapon(u16 weapon_id) {
     this->weapon->updateDirection(this, this->animator);
 }
 
-u16 Player::getWeaponId() const {
+utils::SPRITESHEETS_ID Player::getWeaponId() const {
     return this->weapon->getSpritesheet();
 }
 

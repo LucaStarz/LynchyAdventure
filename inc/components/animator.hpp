@@ -4,10 +4,12 @@
 #include <3ds.h>
 #include <vector>
 #include "utils/directions.hpp"
+#include "utils/spritesheets.hpp"
 
 namespace components {
     typedef struct {
-        u16 spritesheet, first_index, last_index;
+        utils::SPRITESHEETS_ID spritesheet; 
+        u16 first_index, last_index;
         u8 duration;
     } Animation;
 
@@ -23,13 +25,15 @@ namespace components {
         void update(entities::Entity *parent, entities::Zone *container) override;
         void render(entities::Entity *parent, float depth, entities::Zone *container) override;
     
-        u8 addAnimation(u16 spritesheet, u16 first_index, u16 last_index, u8 duration);
+        u8 addAnimation(utils::SPRITESHEETS_ID spritesheet, u16 first_index, u16 last_index, u8 duration);
         void addOrientedAnimation(u8 left, u8 right, u8 top, u8 bottom);
         void addNonOrientedAnimation(u8 index);
 
         void setCurrentAnimation(u8 animation);
 
         utils::FIXED_DIRECTION getDirection() const;
+
+        bool isAnimationFinished() const;
     private:
         std::vector<Animation> animations;
         std::vector<OrientedAnimation> oriented_animations;

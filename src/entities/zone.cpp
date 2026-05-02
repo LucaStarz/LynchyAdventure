@@ -19,21 +19,42 @@ Zone::~Zone() {
     this->clear();
 }
 
-void Zone::update(Zone *container) {
+bool Zone::update(Zone *container) {
     for (Entity *entity : this->background_entities)
         entity->update(this);
     
     for (Entity *entity : this->more_background_entities)
         entity->update(this);
     
-    for (Entity *entity : this->complex_entities)
-        entity->update(this);
+    std::vector<Entity*> to_add;
+    for (auto it = this->complex_entities.begin(); it != this->complex_entities.end(); ) {
+        Entity* entity = *it;
+        
+        if (!entity->update(this)) {
+            Entity* loot = entity->getLoot();
+            if (loot)
+                to_add.push_back(loot);
+
+            delete entity;
+            it = this->complex_entities.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    this->complex_entities.insert(
+        this->complex_entities.end(),
+        to_add.begin(),
+        to_add.end()
+    );
     
     for (Entity *entity : this->foreground_entities)
         entity->update(this);
     
     for (Entity *entity : this->more_foreground_entities)
         entity->update(this);
+    
+    return true;
 }
 
 void Zone::renderBackground() {
@@ -59,7 +80,7 @@ void Zone::load(u16 id, u16 *left, u16 *right, u16 *top, u16 *bottom) {
     this->id = id;
     systems::GraphicsSystem &gfx_system = systems::GraphicsSystem::getInstance();
 
-    for (u16 spritesheet : this->spritesheets)
+    for (utils::SPRITESHEETS_ID spritesheet : this->spritesheets)
         gfx_system.unloadSpritesheet(spritesheet);
     this->clear();
 
@@ -80,11 +101,11 @@ void Zone::load(u16 id, u16 *left, u16 *right, u16 *top, u16 *bottom) {
     *right = this->loadU16(zone_file);
     *bottom = this->loadU16(zone_file);
 
-    u16 spritesheet_id = this->loadU16(zone_file);
+    utils::SPRITESHEETS_ID spritesheet_id = (utils::SPRITESHEETS_ID)this->loadU16(zone_file);
     while (spritesheet_id) {
         gfx_system.loadSpritesheet(spritesheet_id);
         this->spritesheets.push_back(spritesheet_id);
-        spritesheet_id = this->loadU16(zone_file);
+        spritesheet_id = (utils::SPRITESHEETS_ID)this->loadU16(zone_file);
     }
 
     this->loadZonePart(&this->background_entities, zone_file);
@@ -154,7 +175,7 @@ void Zone::clear() {
 void Zone::loadZonePart(std::vector<Entity*> *zone_part, FILE *zone_file) {
     for (u16 y = 0; y < ZONE_HEIGHT; y++) {
         for (u16 x = 0; x < ZONE_WIDTH; x++) {
-            u16 spritesheet_id = this->loadU16(zone_file);
+            utils::SPRITESHEETS_ID spritesheet_id = (utils::SPRITESHEETS_ID)this->loadU16(zone_file);
             if (spritesheet_id) {
                 if (spritesheet_id == 1)
                     break;
@@ -203,7 +224,7 @@ u16 Zone::loadU16(FILE *zone_file) {
     return fgetc(zone_file) | (fgetc(zone_file) << 8);
 }
 
-entities::Entity *Zone::createEntity(u16 spritesheet_id, u16 sprite_index, float x, float y, bool *is_complex) {
+entities::Entity *Zone::createEntity(utils::SPRITESHEETS_ID spritesheet_id, u16 sprite_index, float x, float y, bool *is_complex) {
     switch (spritesheet_id) {
         case utils::SPRT_PLANT: case utils::SPRT_BLACK_FLAG:
             return new entities::AnimatedTile(x, y, TILE_SIZE, TILE_SIZE, spritesheet_id, 0, 3, 8);

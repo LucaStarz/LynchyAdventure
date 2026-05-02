@@ -2,7 +2,7 @@
 
 using namespace entities;
 
-Tile::Tile(float x, float y, float width, float height, u16 spritesheet_id, u16 index)
+Tile::Tile(float x, float y, float width, float height, utils::SPRITESHEETS_ID spritesheet_id, u16 index)
     : Entity(x, y, width, height) {
     this->image = new components::ImageComponent(spritesheet_id, index);
 }

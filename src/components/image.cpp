@@ -5,7 +5,7 @@
 
 using namespace components;
 
-ImageComponent::ImageComponent(u16 spritesheet_id, u16 sprite_index) {
+ImageComponent::ImageComponent(utils::SPRITESHEETS_ID spritesheet_id, u16 sprite_index) {
     this->spritesheet_id = spritesheet_id;
     this->sprite_index = sprite_index;
 }
@@ -27,7 +27,7 @@ void ImageComponent::render(entities::Entity *parent, float depth, entities::Zon
     );
 }
 
-void ImageComponent::setSpritesheetId(u16 spritesheet_id) {
+void ImageComponent::setSpritesheetId(utils::SPRITESHEETS_ID spritesheet_id) {
     this->spritesheet_id = spritesheet_id;
 }
 
@@ -35,6 +35,6 @@ void ImageComponent::setSpriteIndex(u16 index) {
     this->sprite_index = index;
 }
 
-u16 ImageComponent::getSpritesheetId() const {
+utils::SPRITESHEETS_ID ImageComponent::getSpritesheetId() const {
     return this->spritesheet_id;
 }

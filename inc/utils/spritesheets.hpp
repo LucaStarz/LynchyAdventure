@@ -25,6 +25,8 @@ namespace utils {
         SPRT_GREEN_BAMBOO_BOTTOM = 17,
         SPRT_LIFE_RECEPTACLE = 18,
         SPRT_WEAPON_AXE = 19,
-        SPRT_WEAPON_STICK = 20
+        SPRT_WEAPON_STICK = 20,
+        SPRT_DEAD = 21,
+        SPRT_COIN = 22
     };
 }

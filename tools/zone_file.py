@@ -31,6 +31,8 @@ class Spritesheet(Enum):
     # 18 ->         life_receptacle
     # 19 ->         axe
     # 20 ->         stick
+    # 21 ->         dead
+    # 22 ->         coin
 
 
 # VARIABLES

@@ -63,7 +63,7 @@ void SaveSystem::loadPlayerSave() {
     game_system.getPlayer()->setLifeInfos(actual_life, max_life);
 
     // Read player's weapon id
-    u16 weapon_id;
+    utils::SPRITESHEETS_ID weapon_id;
     fread(&weapon_id, sizeof(u16), 1, player_save_file);
     game_system.getPlayer()->setWeapon(weapon_id);
 
@@ -104,7 +104,7 @@ void SaveSystem::storePlayerSave() {
     fclose(player_save_file);
 }
 
-void SaveSystem::loadWeaponData(entities::Weapon *weapon, u16 weapon_id) {
+void SaveSystem::loadWeaponData(entities::Weapon *weapon, utils::SPRITESHEETS_ID weapon_id) {
     char weapon_path[64];
     sprintf(weapon_path, "romfs:/weapons/%u.wdf", weapon_id);
     FILE *weapon_data_file = fopen(weapon_path, "rb");
@@ -183,7 +183,7 @@ void SaveSystem::initPlayerSave() {
     fputc(max_life, player_save_file);
 
     // Initialize player's weapon id
-    u16 weapon_id = DEFAULT_PLAYER_WEAPON;
+    utils::SPRITESHEETS_ID weapon_id = (utils::SPRITESHEETS_ID)DEFAULT_PLAYER_WEAPON;
     game_system.getPlayer()->setWeapon(weapon_id);
     fwrite(&weapon_id, sizeof(u16), 1, player_save_file);
 

@@ -25,6 +25,14 @@ void Movement::applyMovement(entities::Entity *parent, entities::Zone *parent_co
         : direction & utils::MOV_DIR_BOTTOM ? this->speed : 0.f;
     
     if (this->dx != 0.f || this->dy != 0.f) {
+        float length = sqrtf(this->dx * this->dx + this->dy * this->dy);
+        if (length > 0.f) {
+            float nx = this->dx / length;
+            float ny = this->dy / length;
+            this->dx = nx * this->speed;
+            this->dy = ny * this->speed;
+        }
+
         this->clampMovement(parent, parent_container);
         if (fabsf(this->dx) > MOVEMENT_DEADZONE) parent->moveX(this->dx);
         if (fabsf(this->dy) > MOVEMENT_DEADZONE) parent->moveY(this->dy);

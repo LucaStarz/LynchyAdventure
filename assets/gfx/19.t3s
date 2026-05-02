@@ -1,3 +1,6 @@
 --atlas -f rgba8888 -z auto
 items/axe/0.png
 items/axe/1.png
+items/axe/2.png
+items/axe/3.png
+items/axe/4.png
