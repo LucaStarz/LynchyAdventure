@@ -2,58 +2,37 @@ name: Build and Release Lynchy Adventure
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    container:
+      image: devkitpro/devkitarm
+
     outputs:
       version: ${{ steps.get_version.outputs.version }}
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract version from commit
+      - name: Extract version
         id: get_version
         run: |
           msg=$(git log -1 --pretty=%B)
-          if [[ $msg =~ [Vv]ersion[^0-9]*([0-9]+\.[0-9]+\.[0-9]+) ]]; then
-            echo "version=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          if [[ $msg =~ [Vv](ersion)?[^0-9]*([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            echo "version=${BASH_REMATCH[2]}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Install devkitPro
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https ca-certificates gnupg
-
-          sudo mkdir -p /etc/apt/keyrings
-          curl -fsSL https://apt.devkitpro.org/devkitpro-keyring.gpg | sudo tee /etc/apt/keyrings/devkitpro.gpg > /dev/null
-
-          echo "deb [signed-by=/etc/apt/keyrings/devkitpro.gpg] https://apt.devkitpro.org stable main" | sudo tee /etc/apt/sources.list.d/devkitpro.list
-
-          sudo apt-get update
-          sudo apt-get install -y devkitpro-pacman
-
-          sudo dkp-pacman -Syu --noconfirm
-          sudo dkp-pacman -S --noconfirm 3ds-dev
-
-      - name: Setup environment
-        run: |
-          echo "DEVKITPRO=/opt/devkitpro" >> $GITHUB_ENV
-          echo "DEVKITARM=/opt/devkitpro/devkitARM" >> $GITHUB_ENV
-          echo "/opt/devkitpro/tools/bin" >> $GITHUB_PATH
-
-      - name: Build project
-        run: |
-          make
+      - name: Build
+        run: make
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: 3ds-build
+          name: build
           path: |
             *.3dsx
 
@@ -63,10 +42,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: 3ds-build
+          name: build
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -75,7 +53,5 @@ jobs:
           name: Version ${{ needs.build.outputs.version }}
           files: |
             *.3dsx
-            *.cia
-            *.elf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
