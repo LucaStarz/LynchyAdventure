@@ -4,12 +4,13 @@
 
 using namespace entities;
 
-Weapon::Weapon(float x, float y, float w, float h, u8 damage, u8 scan, u16 duration)
+Weapon::Weapon(float x, float y, float w, float h, u8 damage, u8 scan, u8 visible, u16 duration)
     : Entity(x, y, w, h) {
     this->enable = false;
     this->direction = utils::FIX_DIR_BOTTOM;
 
     this->hitbox = new components::Hitbox(scan, 1, 0.f, 0.f, w, h);
+    this->collider = new components::Collider(visible, scan, 0.f, 0.f, w, h);
     this->image = new components::ImageComponent(utils::SPRT_EMPTY, 0);
     this->timer = new components::Timer(duration, false);
 }
@@ -18,6 +19,7 @@ Weapon::~Weapon() {
     delete this->image;
     delete this->timer;
     delete this->hitbox;
+    delete this->collider;
 }
 
 bool Weapon::isEnable() const {
@@ -63,6 +65,10 @@ void Weapon::render(float depth, Zone *container) {
     }
 }
 
+components::Collider *Weapon::getCollider() const {
+    return this->collider;
+}
+
 void Weapon::setSpritesheet(utils::SPRITESHEETS_ID spritesheet) {
     this->image->setSpritesheetId(spritesheet);
 }
@@ -89,6 +95,9 @@ void Weapon::updateDirection(entities::Entity *parent, components::Animator *ani
     this->setHeight(this->directions[this->direction].height);
     this->hitbox->setWidth(this->directions[this->direction].width);
     this->hitbox->setHeight(this->directions[this->direction].height);
+    this->collider->setWidth(this->directions[this->direction].width);
+    this->collider->setHeight(this->directions[this->direction].height);
+
     this->image->setSpriteIndex(this->direction + 1);
     this->setX(parent->getX() + this->directions[this->direction].offset_x + this->direction == utils::FIX_DIR_RIGHT ? parent->getWidth() : 0.f);
     this->setY(parent->getY() + this->directions[this->direction].offset_y + this->direction == utils::FIX_DIR_BOTTOM ? parent->getY() : 0.f);

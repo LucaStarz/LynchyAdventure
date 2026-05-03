@@ -24,11 +24,17 @@ namespace entities {
 
         void setLifeInfos(u8 life, u8 max_life);
         void getLifeInfos(u8 *life, u8 *max_life);
+
+        void setCoins(u32 coins);
+        void addCoins(u32 coins);
+        u32 getCoins() const;
     
+        entities::Weapon *getWeapon() const;
         void setWeapon(utils::SPRITESHEETS_ID weapon_id);
         utils::SPRITESHEETS_ID getWeaponId() const;
     private:
         Weapon *weapon;
+        u32 coins;
 
         components::LifeManager *life_manager;
         components::Animator *animator;

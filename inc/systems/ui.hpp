@@ -17,5 +17,6 @@ namespace systems {
         ~UISystem();
 
         void renderLife(entities::Player *player);
+        void renderCoins(entities::Player *player);
     };
 }

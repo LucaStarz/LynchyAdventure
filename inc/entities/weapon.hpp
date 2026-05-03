@@ -13,7 +13,7 @@ namespace entities {
 
     class Weapon : public Entity {
     public:
-        Weapon(float x, float y, float w, float h, u8 damage, u8 scan, u16 duration);
+        Weapon(float x, float y, float w, float h, u8 damage, u8 scan, u8 visible, u16 duration);
         ~Weapon();
     
         bool isEnable() const;
@@ -22,6 +22,8 @@ namespace entities {
 
         bool update(Zone *container) override;
         void render(float depth, Zone *container) override;
+
+        components::Collider *getCollider() const override;
 
         void setSpritesheet(utils::SPRITESHEETS_ID spritesheet);
         void setDamage(u8 damage);
@@ -39,6 +41,7 @@ namespace entities {
 
         components::Timer *timer;
         components::Hitbox *hitbox;
+        components::Collider *collider;
         components::ImageComponent *image;
 
         void checkHurtbox(Zone *container, Zone *other_container);

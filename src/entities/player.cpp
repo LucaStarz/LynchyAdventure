@@ -7,16 +7,20 @@
 #include "systems/game.hpp"
 #include "systems/gfx.hpp"
 #include "systems/save.hpp"
+#include "systems/sfx.hpp"
+#include "utils/sounds.hpp"
 
 #define IDLE_ANIM   0
 #define WALK_ANIM   1
 #define ATTACK_ANIM 2
+#define DEAD_ANIM   3
 
 using namespace entities;
 
 Player::Player() 
     : Entity(0.f, 0.f, TILE_SIZE, TILE_SIZE) {
-    this->weapon = new Weapon(this->getX(), this->getY() + TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, utils::COL_LAYER_ENEMY, 0);
+    this->weapon = new Weapon(this->getX(), this->getY() + TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, utils::COL_LAYER_ENEMY, utils::COL_LAYER_PLAYER, 0);
+    this->coins = DEFAULT_PLAYER_COINS;
 
     this->animator = new components::Animator();
     this->addAnimations();
@@ -63,8 +67,8 @@ bool Player::update(Zone *container) {
     this->weapon->checkParentInfo(this);
     if (inputs_system.isKeyDown(KEY_A))
         this->weapon->setEnable();
-    else if (inputs_system.isKeyDown(KEY_START))
-        this->setWeapon(utils::SPRT_WEAPON_AXE);
+    else if (inputs_system.isKeyDown(KEY_SELECT))
+        systems::SoundManager::getInstance().playSound(utils::SND_COIN);
     
     this->life_manager->update(this, container);
     return true;
@@ -131,6 +135,25 @@ void Player::getLifeInfos(u8 *life, u8 *max_life) {
     *max_life = this->life_manager->getMaxLife();
 }
 
+void Player::setCoins(u32 coins) {
+    this->coins = coins;
+}
+
+void Player::addCoins(u32 coins) {
+    if (this->coins + coins > MAX_COINS)
+        this->coins = MAX_COINS;
+    else
+        this->coins += coins;
+}
+
+u32 Player::getCoins() const {
+    return this->coins;
+}
+
+entities::Weapon *Player::getWeapon() const {
+    return this->weapon;
+}
+
 void Player::setWeapon(utils::SPRITESHEETS_ID weapon_id) {
     utils::SPRITESHEETS_ID old_spritesheet = this->weapon->getSpritesheet();
     if (old_spritesheet != 0)
@@ -163,4 +186,6 @@ void Player::addAnimations() {
     top = this->animator->addAnimation(utils::SPRT_PLAYER_TOP, 5, 5, 0);
     bottom = this->animator->addAnimation(utils::SPRT_PLAYER_BOTTOM, 5, 5, 0);
     this->animator->addOrientedAnimation(left, right, top, bottom);
+
+    this->animator->addDeadAnimation();
 }

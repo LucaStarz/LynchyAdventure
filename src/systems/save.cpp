@@ -67,6 +67,11 @@ void SaveSystem::loadPlayerSave() {
     fread(&weapon_id, sizeof(u16), 1, player_save_file);
     game_system.getPlayer()->setWeapon(weapon_id);
 
+    // Read player's coins
+    u32 coins;
+    fread(&coins, sizeof(u32), 1, player_save_file);
+    game_system.getPlayer()->setCoins(coins);
+
     PRINT("Player's data has been read\n");
     fclose(player_save_file);
 }
@@ -99,6 +104,10 @@ void SaveSystem::storePlayerSave() {
     // Store player's weapon id
     u16 weapon_id = game_system.getPlayer()->getWeaponId();
     fwrite(&weapon_id, sizeof(u16), 1, player_save_file);
+
+    // Store player's coins
+    u32 coins = game_system.getPlayer()->getCoins();
+    fwrite(&coins, sizeof(u32), 1, player_save_file);
 
     PRINT("Player's data has been saved\n");
     fclose(player_save_file);
@@ -186,6 +195,11 @@ void SaveSystem::initPlayerSave() {
     utils::SPRITESHEETS_ID weapon_id = (utils::SPRITESHEETS_ID)DEFAULT_PLAYER_WEAPON;
     game_system.getPlayer()->setWeapon(weapon_id);
     fwrite(&weapon_id, sizeof(u16), 1, player_save_file);
+
+    // Initialize player's coins
+    u32 coins = DEFAULT_PLAYER_COINS;
+    game_system.getPlayer()->setCoins(coins);
+    fwrite(&coins, sizeof(u32), 1, player_save_file);
 
     fclose(player_save_file);
 }

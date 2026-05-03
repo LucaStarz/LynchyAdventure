@@ -13,26 +13,36 @@ ZONE_HEIGHT: int = 15
 # SPRITESHEETS
 class Spritesheet(Enum):
     # id, name, count, first_id(runtime), linked_ids(optional)
-    # 0 -> empty tile
-    # 1 -> end of line
-    GreenFloor =    [2, "green_floor.tsx", 60, math.inf]
-    Plant =         [3, "plant.tsx", 1, math.inf]
-    GreenWater =    [4, "green_water.tsx", 47, math.inf]
-    DarkMill =      [5, "dark_mill.tsx", 1, math.inf]
-    BlackFlag =     [6, "black_flag.tsx", 1, math.inf]
-    # 7 ->          player_left
-    # 8 ->          player_top
-    # 9 ->          player_right
-    # 10 ->         player_bottom
-    LightMill =     [11, "light_mill.tsx", 1, math.inf]
-    SimpleHouse =   [12, "simple_house.tsx", 9, math.inf]
-    WoodFence =     [13, "wood_fence.tsx", 14, math.inf]
-    GreenBamboo =   [17, "green_bamboo.tsx", 1, math.inf, (14, 15, 16)]
-    # 18 ->         life_receptacle
-    # 19 ->         axe
-    # 20 ->         stick
-    # 21 ->         dead
-    # 22 ->         coin
+    # 0 ->              empty tile
+    # 1 ->              end of line
+    GreenFloor =        [2, "green_floor.tsx", 60, math.inf]
+    Plant =             [3, "plant.tsx", 1, math.inf]
+    GreenWater =        [4, "green_water.tsx", 47, math.inf]
+    DarkMill =          [5, "dark_mill.tsx", 1, math.inf]
+    BlackFlag =         [6, "black_flag.tsx", 1, math.inf]
+    # 7 ->              player_left
+    # 8 ->              player_top
+    # 9 ->              player_right
+    # 10 ->             player_bottom
+    LightMill =         [11, "light_mill.tsx", 1, math.inf]
+    SimpleHouse =       [12, "simple_house.tsx", 9, math.inf]
+    WoodFence =         [13, "wood_fence.tsx", 14, math.inf]
+    GreenBamboo =       [17, "green_bamboo.tsx", 1, math.inf, (14, 15, 16)]
+    # 18 ->             life_receptacle
+    # 19 ->             axe
+    # 20 ->             stick
+    # 21 ->             dead
+    # 22 ->             coin
+    DarkGreenFloor =    [23, "dark_green_floor.tsx", 60, math.inf]
+    BlueFlag =          [24, "blue_flag.tsx", 1, math.inf]
+    BrownFlag =         [25, "brown_flag.tsx", 1, math.inf]
+    GrayFlag =          [26, "gray_flag.tsx", 1, math.inf]
+    GreenFlag =         [27, "green_flag.tsx", 1, math.inf]
+    RedFlag =           [28, "red_flag.tsx", 1, math.inf]
+    WhiteFlag =         [29, "white_flag.tsx", 1, math.inf]
+    YellowFlag =        [30, "yellow_flag.tsx", 1, math.inf]
+    GreenPipe =         [31, "green_pipe.tsx", 14, math.inf]
+    # 32 ->             heart
 
 
 # VARIABLES

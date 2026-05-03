@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+tiles/animated/white_flag/0.png
+tiles/animated/white_flag/1.png
+tiles/animated/white_flag/2.png
+tiles/animated/white_flag/3.png

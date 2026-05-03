@@ -18,6 +18,13 @@ namespace components {
         float getY() const;
         float getWidth() const;
         float getHeight() const;
+
+        void setX(float x);
+        void setY(float y);
+        void setWidth(float width);
+        void setHeight(float height);
+
+        u8 getVisibleOn() const;
     private:
         float x, y, width, height;
         u8 visible, scan;

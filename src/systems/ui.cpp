@@ -1,6 +1,7 @@
 #include "systems/ui.hpp"
 #include "systems/gfx.hpp"
 #include "systems/game.hpp"
+#include "systems/text.hpp"
 #include "utils/constants.hpp"
 
 using namespace systems;
@@ -23,7 +24,10 @@ void UISystem::renderTopScreenUI() {
 }
 
 void UISystem::renderBottomScreenUI() {
-    this->renderLife(GameSystem::getInstance().getPlayer());
+    entities::Player *player = GameSystem::getInstance().getPlayer();
+
+    this->renderLife(player);
+    this->renderCoins(player);
 }
 
 void UISystem::renderLife(entities::Player *player) {
@@ -55,4 +59,20 @@ void UISystem::renderLife(entities::Player *player) {
             y += 13.f;
         }
     }
+}
+
+void UISystem::renderCoins(entities::Player *player) {
+    char coins_number[7];
+    sprintf(coins_number, "%lu", player->getCoins());
+
+    TextSystem &text_system = TextSystem::getInstance();
+    C2D_Text coins_text = text_system.generateText(coins_number);
+    TextSystem::getInstance().writeTextWithColor(coins_text, 304.f, 2.25f, 0.5f, C2D_Color32(200, 200, 200, 255), C2D_AlignRight);
+
+    C2D_DrawImageAt(
+        GraphicsSystem::getInstance().getSprite(utils::SPRT_COIN, 0),
+        306.f, 5.f,
+        Z_INDEX_BACKGROUND, nullptr,
+        1.f, 1.f
+    );
 }

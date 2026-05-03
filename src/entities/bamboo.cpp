@@ -6,6 +6,8 @@
 #include "entities/player.hpp"
 #include "systems/game.hpp"
 #include "entities/coin.hpp"
+#include "entities/heart.hpp"
+#include <cstdlib>
 
 #define IDLE_ANIM   0
 #define WALK_ANIM   1
@@ -72,7 +74,14 @@ void Bamboo::render(float depth, Zone *container) {
 }
 
 Entity *Bamboo::getLoot() const {
-    return new Coin(this->getX() + 4.f, this->getY() + 4.f);
+    u8 chance = rand() % 100;
+
+    if (chance < 33)
+        return new Coin(this->getX() + 4.f, this->getY() + 4.f);
+    else if (chance < 66)
+        return new Heart(this->getX() + 3.5f, this->getY() + 4.f);
+    
+    return nullptr;
 }
 
 components::Hurtbox *Bamboo::getHurtbox() const {
@@ -108,7 +117,5 @@ void Bamboo::addAnimations() {
     bottom = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_BOTTOM, 0, 3, 8);
     this->animator->addOrientedAnimation(left, right, top, bottom);
 
-    this->animator->addNonOrientedAnimation(
-        this->animator->addAnimation(utils::SPRT_DEAD, 0, 5, 8)
-    );
+    this->animator->addDeadAnimation();
 }

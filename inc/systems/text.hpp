@@ -11,8 +11,9 @@ namespace systems {
         TextSystem(const TextSystem&) = delete;
         TextSystem &operator=(const TextSystem&) = delete;
 
-        void writeText(const char *text, float x, float y, float scale);
-        void writeTextWithColor(const char *text, float x, float y, float scale, u32 color);
+        C2D_Text generateText(const char *text);
+        void writeText(C2D_Text text, float x, float y, float scale, u32 flags);
+        void writeTextWithColor(C2D_Text text, float x, float y, float scale, u32 color, u32 flags);
     private:
         C2D_Font font;
         C2D_TextBuf buffer;

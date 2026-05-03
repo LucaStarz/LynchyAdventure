@@ -22,6 +22,7 @@ namespace utils {
     #define FONT_PATH                   "romfs:/gfx/font.bcfnt"
     #define GFX_PATH                    "romfs:/gfx/%u.t3x"
     #define TEXT_PATH                   "romfs:/texts/%u/%u.ltf"
+    #define SFX_PATH                    "romfs:/sfx/sounds/%u.wav"
     #define CONFIG_SAVE_PATH            "sdmc:/lynchy_adv/config.ldf"
     #define PLAYER_SAVE_PATH            "sdmc:/lynchy_adv/saves/player.ldf"
 
@@ -35,6 +36,7 @@ namespace utils {
     #define DEFAULT_PLAYER_SPEED        .9f
     #define DEFAULT_PLAYER_INV_TIME     90
     #define DEFAULT_PLAYER_WEAPON       20
+    #define DEFAULT_PLAYER_COINS        0
 
 
     /* Enemies' speed ratio */
@@ -45,4 +47,5 @@ namespace utils {
     #define MOVEMENT_DEADZONE           0.1f
     #define ZONE_MOVEMENT_X             6.f
     #define ZONE_MOVEMENT_Y             4.f
+    #define MAX_COINS                   999999
 }

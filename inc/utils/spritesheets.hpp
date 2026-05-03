@@ -27,6 +27,16 @@ namespace utils {
         SPRT_WEAPON_AXE = 19,
         SPRT_WEAPON_STICK = 20,
         SPRT_DEAD = 21,
-        SPRT_COIN = 22
+        SPRT_COIN = 22,
+        SPRT_DARK_GREEN_FLOOR = 23,
+        SPRT_BLUE_FLAG = 24,
+        SPRT_BROWN_FLAG = 25,
+        SPRT_GRAY_FLAG = 26,
+        SPRT_GREEN_FLAG = 27,
+        SPRT_RED_FLAG = 28,
+        SPRT_WHITE_FLAG = 29,
+        SPRT_YELLOW_FLAG = 30,
+        SPRT_GREEN_PIPE = 31,
+        SPRT_HEART = 32
     };
 }

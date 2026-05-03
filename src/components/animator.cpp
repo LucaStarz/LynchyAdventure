@@ -95,6 +95,12 @@ void Animator::addNonOrientedAnimation(u8 index) {
     this->oriented_animations.push_back(anim);
 }
 
+void Animator::addDeadAnimation() {
+    this->addNonOrientedAnimation(
+        this->addAnimation(utils::SPRT_DEAD, 0, 5, 6)
+    );
+}
+
 void Animator::setCurrentAnimation(u8 animation) {
     if (animation >= this->oriented_animations.size() || animation == this->current_animation)
         return;

@@ -226,7 +226,9 @@ u16 Zone::loadU16(FILE *zone_file) {
 
 entities::Entity *Zone::createEntity(utils::SPRITESHEETS_ID spritesheet_id, u16 sprite_index, float x, float y, bool *is_complex) {
     switch (spritesheet_id) {
-        case utils::SPRT_PLANT: case utils::SPRT_BLACK_FLAG:
+        case utils::SPRT_PLANT: case utils::SPRT_BLACK_FLAG: case utils::SPRT_BLUE_FLAG: case utils::SPRT_BROWN_FLAG:
+        case utils::SPRT_GRAY_FLAG: case utils::SPRT_GREEN_FLAG: case utils::SPRT_RED_FLAG: case utils::SPRT_WHITE_FLAG:
+        case utils::SPRT_YELLOW_FLAG:
             return new entities::AnimatedTile(x, y, TILE_SIZE, TILE_SIZE, spritesheet_id, 0, 3, 8);
 
         case utils::SPRT_DARK_MILL: case utils::SPRT_LIGHT_MILL:

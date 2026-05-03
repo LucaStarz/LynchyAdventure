@@ -51,6 +51,7 @@ void GraphicsSystem::loadCommonSpritesheets() {
     this->loadSpritesheet(utils::SPRT_LIFE_RECEPTACLE);
     this->loadSpritesheet(utils::SPRT_DEAD);
     this->loadSpritesheet(utils::SPRT_COIN);
+    this->loadSpritesheet(utils::SPRT_HEART);
 }
 
 void GraphicsSystem::loadSpritesheet(utils::SPRITESHEETS_ID id) {

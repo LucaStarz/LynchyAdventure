@@ -28,6 +28,7 @@ namespace components {
         u8 addAnimation(utils::SPRITESHEETS_ID spritesheet, u16 first_index, u16 last_index, u8 duration);
         void addOrientedAnimation(u8 left, u8 right, u8 top, u8 bottom);
         void addNonOrientedAnimation(u8 index);
+        void addDeadAnimation();
 
         void setCurrentAnimation(u8 animation);
 

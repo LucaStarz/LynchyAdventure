@@ -13,5 +13,6 @@ namespace entities {
         void render(float depth, Zone *container) override;
     private:
         components::AnimatedImage *image;
+        components::Collider *detector;
     };
 }

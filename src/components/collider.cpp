@@ -109,3 +109,23 @@ float Collider::getWidth() const {
 float Collider::getHeight() const {
     return this->height;
 }
+
+void Collider::setX(float x) {
+    this->x = x;
+}
+
+void Collider::setY(float y) {
+    this->y = y;
+}
+
+void Collider::setWidth(float width) {
+    this->width = width;
+}
+
+void Collider::setHeight(float height) {
+    this->height = height;
+}
+
+u8 Collider::getVisibleOn() const {
+    return this->visible;
+}
