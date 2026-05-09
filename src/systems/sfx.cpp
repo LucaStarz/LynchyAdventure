@@ -57,7 +57,7 @@ void SoundManager::loadSound(utils::SOUNDS_ID id) {
     fread(new_audio.data, 1, new_audio.size, sound_file);
     fclose(sound_file);
 
-    PRINT("Sound %u was loaded\n", id);
+    PRINT("Sound %u has been loaded\n", id);
     this->audios[id] = std::move(new_audio);
 }
 
@@ -68,7 +68,7 @@ void SoundManager::unloadSound(utils::SOUNDS_ID id) {
     
     audio->second.loading_count -= 1;
     if (!audio->second.loading_count) {
-        PRINT("Sound %u was unloaded\n", id);
+        PRINT("Sound %u has been unloaded\n", id);
         this->audios.erase(audio);
     }
 }

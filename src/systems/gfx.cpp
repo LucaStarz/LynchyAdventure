@@ -76,7 +76,7 @@ void GraphicsSystem::loadSpritesheet(utils::SPRITESHEETS_ID id) {
     for (u16 i = 0; i < sprites_count; i++)
         new_spritesheet.sprites[i] = std::move(C2D_SpriteSheetGetImage(new_spritesheet.spritesheet, i));
     
-    PRINT("Spritesheet %u was loaded\n", id);
+    PRINT("Spritesheet %u has been loaded\n", id);
     this->spritesheets[id] = std::move(new_spritesheet);
 }
 
@@ -87,7 +87,7 @@ void GraphicsSystem::unloadSpritesheet(utils::SPRITESHEETS_ID id) {
     
     spritesheet->second.loading_count -= 1;
     if (!spritesheet->second.loading_count) {
-        PRINT("Spritesheet %u was unloaded\n", id);
+        PRINT("Spritesheet %u has been unloaded\n", id);
         this->spritesheets.erase(spritesheet);
     }
 }

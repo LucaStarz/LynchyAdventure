@@ -5,10 +5,10 @@
 #include "components/squared_detector.hpp"
 
 namespace entities {
-    class Bamboo : public Entity {
+    class Slime : public Entity {
     public:
-        Bamboo(float x, float y);
-        ~Bamboo();
+        Slime(float x, float y);
+        ~Slime();
 
         bool update(Zone *container) override;
         void render(float depth, Zone *container) override;

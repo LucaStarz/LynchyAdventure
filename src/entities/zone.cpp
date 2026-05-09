@@ -1,6 +1,7 @@
 #include "entities/zone.hpp"
 #include "entities/collision.hpp"
 #include "entities/bamboo.hpp"
+#include "entities/slime.hpp"
 #include "entities/tile.hpp"
 #include "entities/animated_tile.hpp"
 #include "utils/constants.hpp"
@@ -114,7 +115,7 @@ void Zone::load(u16 id, u16 *left, u16 *right, u16 *top, u16 *bottom) {
     this->loadZonePart(&this->more_foreground_entities, zone_file);
     this->loadZoneCollisions(zone_file);
 
-    PRINT("Zone %u was loaded\n", this->id);
+    PRINT("Zone %u has been loaded\n", this->id);
     fclose(zone_file);
 }
 
@@ -237,6 +238,10 @@ entities::Entity *Zone::createEntity(utils::SPRITESHEETS_ID spritesheet_id, u16 
         case utils::SPRT_GREEN_BAMBOO_BOTTOM:
             *is_complex = true;
             return new entities::Bamboo(x, y);
+        
+        case utils::SPRT_BLUE_SLIME_BOTTOM:
+            *is_complex = true;
+            return new entities::Slime(x, y);
 
         default:
             return new entities::Tile(x, y, TILE_SIZE, TILE_SIZE, spritesheet_id, sprite_index);

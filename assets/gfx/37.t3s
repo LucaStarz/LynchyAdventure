@@ -1,0 +1,15 @@
+--atlas -f rgba8888 -z auto
+tiles/static/orange_pipe/0.png
+tiles/static/orange_pipe/1.png
+tiles/static/orange_pipe/2.png
+tiles/static/orange_pipe/3.png
+tiles/static/orange_pipe/4.png
+tiles/static/orange_pipe/5.png
+tiles/static/orange_pipe/6.png
+tiles/static/orange_pipe/7.png
+tiles/static/orange_pipe/8.png
+tiles/static/orange_pipe/9.png
+tiles/static/orange_pipe/10.png
+tiles/static/orange_pipe/11.png
+tiles/static/orange_pipe/12.png
+tiles/static/orange_pipe/13.png

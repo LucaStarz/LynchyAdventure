@@ -141,7 +141,7 @@ void SaveSystem::loadWeaponData(entities::Weapon *weapon, utils::SPRITESHEETS_ID
         weapon->setDirectionInfo(i, offset_x, offset_y, width, height);
     }
 
-    PRINT("Weapon's data %u was loaded\n", weapon_id);
+    PRINT("Weapon's data %u has been loaded\n", weapon_id);
     fclose(weapon_data_file);
 }
 

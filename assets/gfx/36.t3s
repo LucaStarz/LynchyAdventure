@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+actors/blue_slime/bottom/0.png
+actors/blue_slime/bottom/1.png
+actors/blue_slime/bottom/2.png
+actors/blue_slime/bottom/3.png

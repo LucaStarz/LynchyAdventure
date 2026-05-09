@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "1.tmx",
+    "activeFile": "3.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -14,13 +14,13 @@
             "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 237.16666666666663,
-                "y": 136.16666666666669
+                "x": 197.5,
+                "y": 123.16666666666667
             }
         },
         "2.tmx": {
             "scale": 3,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 200,
                 "y": 119.83333333333333
@@ -28,10 +28,10 @@
         },
         "3.tmx": {
             "scale": 2,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 200,
-                "y": 119.75
+                "x": 296.25,
+                "y": 98.75
             }
         },
         "black_flag.tsx": {
@@ -44,7 +44,13 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "blue_slime.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "brown_flag.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -62,12 +68,17 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "gray_pipe.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "green_bamboo.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "green_flag.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -77,6 +88,7 @@
             "scaleInEditor": 2
         },
         "green_pipe.tsx": {
+            "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
@@ -86,6 +98,11 @@
             "scaleInEditor": 1
         },
         "light_mill.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "orange_pipe.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -120,7 +137,7 @@
         }
     },
     "last.exportedFilePath": "C:/Users/jonna/Desktop/Programmation/Nintendo/3DS/LynchyAdventure/assets/zones",
-    "last.imagePath": "C:/Users/jonna/Desktop/Programmation/Nintendo/3DS/LynchyAdventure/assets/gfx/tiles/static/green_pipe",
+    "last.imagePath": "C:/Users/jonna/Desktop/Programmation/Nintendo/3DS/LynchyAdventure/assets/gfx/tiles/static/gray_pipe",
     "map.height": 18,
     "map.lastUsedExportFilter": "Fichiers de carte JSON (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -131,23 +148,24 @@
         "1.tmx",
         "3.tmx",
         "2.tmx",
-        "green_pipe.tsx"
+        "orange_pipe.tsx",
+        "gray_pipe.tsx"
     ],
     "project": "zones.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "green_pipe.tsx",
+        "1.tmx",
+        "gray_pipe.tsx",
+        "orange_pipe.tsx",
         "2.tmx",
         "3.tmx",
-        "1.tmx",
+        "green_pipe.tsx",
+        "blue_slime.tsx",
         "white_flag.tsx",
         "red_flag.tsx",
         "green_flag.tsx",
         "gray_flag.tsx",
-        "brown_flag.tsx",
-        "blue_flag.tsx",
-        "yellow_flag.tsx",
-        "dark_green_floor.tsx"
+        "brown_flag.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

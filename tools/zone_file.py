@@ -43,6 +43,9 @@ class Spritesheet(Enum):
     YellowFlag =        [30, "yellow_flag.tsx", 1, math.inf]
     GreenPipe =         [31, "green_pipe.tsx", 14, math.inf]
     # 32 ->             heart
+    BlueSlime =         [36, "blue_slime.tsx", 1, math.inf, (33, 34, 35)]
+    OrangePipe =        [37, "orange_pipe.tsx", 14, math.inf]
+    GrayPipe =          [38, "gray_pipe.tsx", 14, math.inf]
 
 
 # VARIABLES

@@ -40,7 +40,11 @@ namespace utils {
 
 
     /* Enemies' speed ratio */
-    #define ENEMY_BAMBOO_SP_RT          .75f
+    #define ENEMY_BAMBOO_SPEED          .6f
+    #define ENEMY_SLIME_SPEED           .7f
+
+    /* Enemies' invicible time */
+    #define ENEMY_SLIME_INV_TIME        50
 
 
     /* Other constants */

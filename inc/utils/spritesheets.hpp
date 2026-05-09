@@ -37,6 +37,12 @@ namespace utils {
         SPRT_WHITE_FLAG = 29,
         SPRT_YELLOW_FLAG = 30,
         SPRT_GREEN_PIPE = 31,
-        SPRT_HEART = 32
+        SPRT_HEART = 32,
+        SPRT_BLUE_SLIME_LEFT = 33,
+        SPRT_BLUE_SLIME_TOP = 34,
+        SPRT_BLUE_SLIME_RIGHT = 35,
+        SPRT_BLUE_SLIME_BOTTOM = 36,
+        SPRT_ORANGE_PIPE = 37,
+        SPRT_GRAY_PIPE = 38
     };
 }

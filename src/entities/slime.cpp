@@ -1,34 +1,33 @@
-#include "entities/bamboo.hpp"
+#include "entities/slime.hpp"
 #include "utils/constants.hpp"
 #include "utils/collisions.hpp"
-#include "utils/spritesheets.hpp"
-#include "systems/zone_system.hpp"
-#include "entities/player.hpp"
-#include "systems/game.hpp"
 #include "entities/coin.hpp"
 #include "entities/heart.hpp"
+#include "entities/player.hpp"
+#include "systems/game.hpp"
+#include "systems/zone_system.hpp"
 #include <cstdlib>
+#include "utils/utilities.hpp"
 
-#define IDLE_ANIM   0
-#define WALK_ANIM   1
-#define DEAD_ANIM   2
+#define IDLE_WALK_ANIM  0
+#define DEAD_ANIM       1
 
 using namespace entities;
 
-Bamboo::Bamboo(float x, float y)
+Slime::Slime(float x, float y)
     : Entity(x, y, TILE_SIZE, TILE_SIZE) {
     this->collider = new components::Collider(utils::COL_LAYER_ENEMY, utils::COL_LAYER_TERRAIN | utils::COL_LAYER_WATER, 2.f, 11.f, 12.f, 5.f);
     this->animator = new components::Animator();
     this->addAnimations();
-    
+
     this->hitbox = new components::Hitbox(utils::COL_LAYER_PLAYER, 1, 0.f, 0.f, TILE_SIZE, TILE_SIZE);
     this->hurtbox = new components::Hurtbox(utils::COL_LAYER_ENEMY, 0.f, 0.f, TILE_SIZE, TILE_SIZE);
-    this->dectector = new components::SquaredDetector(100.f);
-    this->life_manager = new components::LifeManager(1, 1, 0);
-    this->movement = new components::Movement(ENEMY_BAMBOO_SPEED);
+    this->dectector = new components::SquaredDetector(150.f);
+    this->life_manager = new components::LifeManager(2, 2, ENEMY_SLIME_INV_TIME);
+    this->movement = new components::Movement(ENEMY_SLIME_SPEED);
 }
 
-Bamboo::~Bamboo() {
+Slime::~Slime() {
     delete this->collider;
     delete this->animator;
     delete this->hitbox;
@@ -38,7 +37,8 @@ Bamboo::~Bamboo() {
     delete this->movement;
 }
 
-bool Bamboo::update(Zone *container) {
+bool Slime::update(Zone *container) {
+    this->life_manager->update(this, container);
     if (this->life_manager->isDead()) {
         this->animator->setCurrentAnimation(DEAD_ANIM);
         this->animator->update(this, container);
@@ -51,18 +51,13 @@ bool Bamboo::update(Zone *container) {
         u8 direction = this->dectector->getDirectionTo(this, container, player, zone_system.getActualZone());
         this->movement->applyMovement(this, container, direction);
         this->animator->update(this, container);
-        if (this->movement->getDx() == 0.f && this->movement->getDy() == 0.f)
-            this->animator->setCurrentAnimation(IDLE_ANIM);
-        else
-            this->animator->setCurrentAnimation(WALK_ANIM);
-
         this->hitbox->checkHurtbox(this, container, player, zone_system.getActualZone());
     }
 
     return true;
 }
 
-void Bamboo::render(float depth, Zone *container) {
+void Slime::render(float depth, Zone *container) {
     this->animator->render(this, depth, container);
 
 #ifdef LYNCHY_DEBUG
@@ -73,49 +68,44 @@ void Bamboo::render(float depth, Zone *container) {
 #endif
 }
 
-Entity *Bamboo::getLoot() const {
+Entity *Slime::getLoot() const {
     u8 chance = rand() % 100;
 
-    if (chance < 33)
+    if (chance < 40)
         return new Coin(this->getX() + 4.f, this->getY() + 4.f);
-    else if (chance < 66)
-        return new Heart(this->getX() + 3.5f, this->getY() + 4.f);
+    else if (chance < 80)
+        return new Heart(this->getX() + 3.5f, this->getY() + 3.5f);
     
     return nullptr;
 }
 
-components::Hurtbox *Bamboo::getHurtbox() const {
+components::Hurtbox *Slime::getHurtbox() const {
     return this->hurtbox;
 }
 
-components::Collider *Bamboo::getCollider() const {
+components::Collider *Slime::getCollider() const {
     return this->collider;
 }
 
-components::LifeManager *Bamboo::getLifeManager() const {
+components::LifeManager *Slime::getLifeManager() const {
     return this->life_manager;
 }
 
-components::Movement *Bamboo::getMovement() const {
+components::Movement *Slime::getMovement() const {
     return this->movement;
 }
 
-components::Animator *Bamboo::getAnimator() const {
+components::Animator *Slime::getAnimator() const {
     return this->animator;
 }
 
-void Bamboo::addAnimations() {
-    u8 left = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_LEFT, 0, 0, 0);
-    u8 right = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_RIGHT, 0, 0, 0);
-    u8 top = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_TOP, 0, 0, 0);
-    u8 bottom = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_BOTTOM, 0, 0, 0);
-    this->animator->addOrientedAnimation(left, right, top, bottom);
-
-    left = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_LEFT, 0, 3, 8);
-    right = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_RIGHT, 0, 3, 8);
-    top = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_TOP, 0, 3, 8);
-    bottom = this->animator->addAnimation(utils::SPRT_GREEN_BAMBOO_BOTTOM, 0, 3, 8);
+void Slime::addAnimations() {
+    u8 left = this->animator->addAnimation(utils::SPRT_BLUE_SLIME_LEFT, 0, 3, 8);
+    u8 right = this->animator->addAnimation(utils::SPRT_BLUE_SLIME_RIGHT, 0, 3, 8);
+    u8 top = this->animator->addAnimation(utils::SPRT_BLUE_SLIME_TOP, 0, 3, 8);
+    u8 bottom = this->animator->addAnimation(utils::SPRT_BLUE_SLIME_BOTTOM, 0, 3, 8);
     this->animator->addOrientedAnimation(left, right, top, bottom);
 
     this->animator->addDeadAnimation();
+    this->animator->setCurrentAnimation(IDLE_WALK_ANIM);
 }
